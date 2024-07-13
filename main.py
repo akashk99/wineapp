@@ -3,7 +3,7 @@ from io import BytesIO
 from fastapi import FastAPI, UploadFile, File
 from PIL import Image
 
-from MenuProcessor import MenuProcessor
+from MenuImageProcessor import MenuImageProcessor
 
 app = FastAPI()
 
@@ -11,7 +11,7 @@ app = FastAPI()
 def handle_image(file_contents):
     image = Image.open(BytesIO(file_contents))
 
-    menu_parser = MenuProcessor(image)
+    menu_parser = MenuImageProcessor(image)
     menu_dict = menu_parser.process()
 
     print(menu_dict)
