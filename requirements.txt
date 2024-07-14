@@ -3,3 +3,6 @@ fastapi==0.111.0
 fastapi-cli==0.0.4
 
 Pillow~=9.0.0
+pytesseract~=0.3.10
+openai~=1.35.13
+pydantic~=2.8.2
