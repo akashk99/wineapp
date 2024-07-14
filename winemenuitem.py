@@ -4,7 +4,7 @@ from typing import List, Optional
 
 
 @dataclass
-class Wine:
+class WineMenuItem:
     name: str
     year: Optional[int]
     price: Optional[float]

@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from wine import Wine
+from winemenuitem import WineMenuItem
 from wine_details import WineDetails
 
 
@@ -42,6 +42,8 @@ class WineAPIClient():
 
         return WineDetails(
             name=vintage["name"],
+            menu_price=wine.price,
+            menu_year=wine.year,
             region=hit["region"]["name"],
             rating=vintage["statistics"]["ratings_average"],
             rating_count=vintage["statistics"]["ratings_count"]

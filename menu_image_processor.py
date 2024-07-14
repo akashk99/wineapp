@@ -7,7 +7,7 @@ from openai import OpenAI
 import os
 
 from custom_functions import CustomFunctions
-from wine import Wine
+from winemenuitem import WineMenuItem
 
 
 class WineMenuImageProcessor:
@@ -58,7 +58,7 @@ class WineMenuImageProcessor:
         )
 
         json_response = json.loads(response.choices[0].message.tool_calls[0].function.arguments)
-        wines = [Wine(**wine) for wine in json_response['wines']]
+        wines = [WineMenuItem(**wine) for wine in json_response['wines']]
 
         return wines
 
