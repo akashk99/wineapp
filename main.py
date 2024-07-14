@@ -14,6 +14,7 @@ from twilio.rest import Client
 
 app = FastAPI()
 
+
 # account_sid = os.environ['TWILIO_ACCOUNT_SID']
 # auth_token = os.environ['TWILIO_AUTH_TOKEN']
 # twilio_phone_number = '+14318147282'
@@ -49,10 +50,10 @@ async def read_menu(file: UploadFile = File(...)):
     else:
         return {"error": "Uploaded file is not an image."}
 
-@app.get("/")
-async def home():
-    return "hi"
 
+@app.get("/")
+async def read_root():
+    return {"Hello": "World"}
 
 # @app.post("/sms")
 # async def read_menu_from_sms(
