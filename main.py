@@ -14,11 +14,11 @@ from twilio.rest import Client
 
 app = FastAPI()
 
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
-twilio_phone_number = '+14318147282'
-
-twilio_client = Client(account_sid, auth_token)
+# account_sid = os.environ['TWILIO_ACCOUNT_SID']
+# auth_token = os.environ['TWILIO_AUTH_TOKEN']
+# twilio_phone_number = '+14318147282'
+#
+# twilio_client = Client(account_sid, auth_token)
 
 def handle_image(file_contents):
     image = Image.open(BytesIO(file_contents))
@@ -49,29 +49,33 @@ async def read_menu(file: UploadFile = File(...)):
     else:
         return {"error": "Uploaded file is not an image."}
 
+@app.get("/")
+async def home():
+    return "hi"
 
-@app.post("/sms")
-async def read_menu_from_sms(
-        NumMedia: int = Form(0),
-        MediaUrl0: str = Form(None),
-):
-    response = MessagingResponse()
 
-    if NumMedia > 0:
-        media_url = MediaUrl0
-        img_data = requests.get(media_url).content
-
-        wine_details_list = handle_image(img_data)
-
-        print(wine_details_list)
-
-        twilio_client.messages.create(
-            body='Hello, this is a test message from Twilio!',
-            from_=twilio_phone_number,  # Your Twilio number
-            to='+16506461633'      # The recipient's number
-        )
-
-        return str(response)
-
-    else:
-        return {"error": "Uploaded file is not an image."}
+# @app.post("/sms")
+# async def read_menu_from_sms(
+#         NumMedia: int = Form(0),
+#         MediaUrl0: str = Form(None),
+# ):
+#     response = MessagingResponse()
+#
+#     if NumMedia > 0:
+#         media_url = MediaUrl0
+#         img_data = requests.get(media_url).content
+#
+#         wine_details_list = handle_image(img_data)
+#
+#         print(wine_details_list)
+#
+#         twilio_client.messages.create(
+#             body='Hello, this is a test message from Twilio!',
+#             from_=twilio_phone_number,  # Your Twilio number
+#             to='+16506461633'      # The recipient's number
+#         )
+#
+#         return str(response)
+#
+#     else:
+#         return {"error": "Uploaded file is not an image."}
