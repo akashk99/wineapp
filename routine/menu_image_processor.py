@@ -2,12 +2,11 @@ import json
 
 import pytesseract
 from PIL import ImageFilter, ImageEnhance
-from PIL.Image import Image
 from openai import OpenAI
 import os
 
-from custom_functions import CustomFunctions
-from winemenuitem import WineMenuItem
+from routine.custom_functions import CustomFunctions
+from payload.wine_menu_item import WineMenuItem
 
 
 class WineMenuImageProcessor:

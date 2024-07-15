@@ -1,25 +1,14 @@
-import json
-import os
 from io import BytesIO
 
-from fastapi import FastAPI, UploadFile, File, Form, requests
-from PIL import Image
-from twilio.twiml.messaging_response import MessagingResponse
-
-from menu_image_processor import WineMenuImageProcessor
-from wine_api_client import WineAPIClient
-from wine_details import WineDetails
 import requests
-from twilio.rest import Client
+from fastapi import FastAPI, UploadFile, File, Form
+from PIL import Image
+
+from routine.menu_image_processor import WineMenuImageProcessor
+from routine.wine_detail_fetcher import WineDetailFetcher
 
 app = FastAPI()
 
-
-# account_sid = os.environ['TWILIO_ACCOUNT_SID']
-# auth_token = os.environ['TWILIO_AUTH_TOKEN']
-# twilio_phone_number = '+14318147282'
-#
-# twilio_client = Client(account_sid, auth_token)
 
 def handle_image(file_contents):
     image = Image.open(BytesIO(file_contents))
@@ -27,11 +16,11 @@ def handle_image(file_contents):
     menu_parser = WineMenuImageProcessor(image)
     wine_list = menu_parser.process()
 
-    wine_api_client = WineAPIClient()
+    wine_detail_fetcher = WineDetailFetcher()
 
     wine_details_list = []
     for wine in wine_list:
-        wine_details = wine_api_client.lookup_wine(wine)
+        wine_details = wine_detail_fetcher.get_wine_details(wine)
         if wine_details:
             wine_details_list.append(wine_details)
 
@@ -45,7 +34,10 @@ async def read_menu(file: UploadFile = File(...)):
     if file.content_type.startswith('image'):
         contents = await file.read()
 
-        return handle_image(contents)
+        wine_details_list = handle_image(contents)
+        print(wine_details_list)
+
+        return wine_details_list
 
     else:
         return {"error": "Uploaded file is not an image."}
@@ -55,28 +47,27 @@ async def read_menu(file: UploadFile = File(...)):
 async def read_root():
     return {"Hello": "World"}
 
-# @app.post("/sms")
-# async def read_menu_from_sms(
-#         NumMedia: int = Form(0),
-#         MediaUrl0: str = Form(None),
-# ):
-#     response = MessagingResponse()
+# account_sid = os.environ['TWILIO_ACCOUNT_SID']
+# auth_token = os.environ['TWILIO_AUTH_TOKEN']
+# twilio_phone_number = '+14318147282'
 #
-#     if NumMedia > 0:
-#         media_url = MediaUrl0
-#         img_data = requests.get(media_url).content
-#
-#         wine_details_list = handle_image(img_data)
-#
-#         print(wine_details_list)
-#
-#         twilio_client.messages.create(
-#             body='Hello, this is a test message from Twilio!',
-#             from_=twilio_phone_number,  # Your Twilio number
-#             to='+16506461633'      # The recipient's number
-#         )
-#
-#         return str(response)
-#
-#     else:
-#         return {"error": "Uploaded file is not an image."}
+# twilio_client = Client(account_sid, auth_token)
+
+
+@app.post("/sms")
+async def read_menu_from_sms(
+        NumMedia: int = Form(0),
+        MediaUrl0: str = Form(None),
+):
+
+    if NumMedia > 0:
+        media_url = MediaUrl0
+        print(media_url)
+        img_data = requests.get(media_url).content
+
+        wine_details_list = handle_image(img_data)
+
+        print(wine_details_list)
+
+    else:
+        return {"error": "Uploaded file is not an image."}
