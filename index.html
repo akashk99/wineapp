@@ -120,8 +120,9 @@
             formData.append('file', fileInput.files[0]);
 
             const spinner = document.getElementById('spinner');
-            const spinnerRow = document.getElementById('spinnerRow');
             const tableBody = document.getElementById('wineTableBody');
+            const spinnerRow = document.createElement('tr');
+            spinnerRow.innerHTML = '<td colspan="11" style="text-align: center;"><div id="spinner" class="spinner"></div></td>';
 
             // Clear existing table data except for the spinner row
             tableBody.innerHTML = '';
@@ -198,7 +199,7 @@
                 row.appendChild(regionCell);
 
                 const ratingCell = document.createElement('td');
-                ratingCell.textContent = wine.rating || 'N/A';
+                ratingCell.textContent = (wine.rating !== null && wine.rating !== undefined) ? wine.rating : 'N/A';
                 row.appendChild(ratingCell);
 
                 const ratingCountCell = document.createElement('td');
@@ -210,7 +211,7 @@
                 row.appendChild(inputWineCell);
 
                 // Add row background color based on rating
-                if (wine.rating) {
+                if (wine.rating !== null && wine.rating !== undefined) {
                     if (wine.rating >= 4) {
                         row.classList.add('green-background');
                     } else if (wine.rating >= 3) {
