@@ -121,16 +121,13 @@
 
             const spinner = document.getElementById('spinner');
             const tableBody = document.getElementById('wineTableBody');
-            const spinnerRow = document.createElement('tr');
-            spinnerRow.innerHTML = '<td colspan="11" style="text-align: center;"><div id="spinner" class="spinner"></div></td>';
+            const spinnerRow = document.getElementById('spinnerRow');
 
             // Clear existing table data except for the spinner row
             tableBody.innerHTML = '';
             tableBody.appendChild(spinnerRow);
 
-            if (spinner) {
-                spinner.style.display = 'block';  // Show spinner
-            }
+            spinner.style.display = 'block';  // Show spinner
 
             try {
                 const response = await fetch('https://wineapi-b32ad6ec268a.herokuapp.com/menu', {
@@ -149,9 +146,7 @@
                 alert('Error: ' + error.message);
                 console.error('Error:', error);
             } finally {
-                if (spinner) {
-                    spinner.style.display = 'none';  // Hide spinner
-                }
+                spinner.style.display = 'none';  // Hide spinner
             }
         });
 
