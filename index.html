@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Details</title>
+    <!-- Include Skeleton CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 10px;
+            }
+            th, td {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Image and Get Wine Details</h1>
+        <form id="imageForm">
+            <div class="row">
+                <div class="six columns">
+                    <input class="u-full-width" type="file" id="imageInput" accept="image/*" required>
+                </div>
+                <div class="six columns">
+                    <button class="button-primary" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+        <table class="u-full-width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Menu Price</th>
+                    <th>Flavor Profile</th>
+                    <th>Alcohol Content</th>
+                    <th>Menu Year</th>
+                    <th>Online Price</th>
+                    <th>Region</th>
+                    <th>Rating</th>
+                    <th>Rating Count</th>
+                </tr>
+            </thead>
+            <tbody id="wineTableBody">
+                <tr id="spinnerRow">
+                    <td colspan="9" style="text-align: center;">
+                        <div id="spinner" class="spinner"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('imageForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('imageInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'block';  // Show spinner
+
+            try {
+                const response = await fetch('https://vibrant-fromage-85102-948d76da783c.herokuapp.com/menu', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                displayTable(result);
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                spinner.style.display = 'none';  // Hide spinner
+            }
+        });
+
+        function displayTable(data) {
+            const tableBody = document.getElementById('wineTableBody');
+            tableBody.innerHTML = ''; // Clear existing table data
+
+            data.forEach(wine => {
+                const row = document.createElement('tr');
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = wine.name;
+                row.appendChild(nameCell);
+
+                const menuPriceCell = document.createElement('td');
+                menuPriceCell.textContent = wine.menu_price;
+                row.appendChild(menuPriceCell);
+
+                const flavorProfileCell = document.createElement('td');
+                flavorProfileCell.textContent = `Acidity: ${wine.flavor_profile.structure.acidity}, Intensity: ${wine.flavor_profile.structure.intensity}, Sweetness: ${wine.flavor_profile.structure.sweetness}, Top Flavors: ${wine.flavor_profile.top_flavors ? wine.flavor_profile.top_flavors.join(', ') : 'N/A'}`;
+                row.appendChild(flavorProfileCell);
+
+                const alcoholContentCell = document.createElement('td');
+                alcoholContentCell.textContent = wine.alcohol_content;
+                row.appendChild(alcoholContentCell);
+
+                const menuYearCell = document.createElement('td');
+                menuYearCell.textContent = wine.menu_year;
+                row.appendChild(menuYearCell);
+
+                const onlinePriceCell = document.createElement('td');
+                onlinePriceCell.textContent = wine.online_price;
+                row.appendChild(onlinePriceCell);
+
+                const regionCell = document.createElement('td');
+                regionCell.textContent = wine.region;
+                row.appendChild(regionCell);
+
+                const ratingCell = document.createElement('td');
+                ratingCell.textContent = wine.rating;
+                row.appendChild(ratingCell);
+
+                const ratingCountCell = document.createElement('td');
+                ratingCountCell.textContent = wine.rating_count;
+                row.appendChild(ratingCountCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

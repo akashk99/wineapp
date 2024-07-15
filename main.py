@@ -2,6 +2,8 @@ from io import BytesIO
 
 import requests
 from fastapi import FastAPI, UploadFile, File, Form
+from pathlib import Path
+from fastapi.responses import HTMLResponse
 from PIL import Image
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -53,7 +55,8 @@ async def read_menu(file: UploadFile = File(...)):
 
 @app.get("/")
 async def read_root():
-    return {"Hello": "World"}
+    html_content = Path("index.html").read_text(encoding="utf-8")
+    return HTMLResponse(content=html_content)
 
 # account_sid = os.environ['TWILIO_ACCOUNT_SID']
 # auth_token = os.environ['TWILIO_AUTH_TOKEN']
