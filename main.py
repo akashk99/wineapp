@@ -70,7 +70,7 @@ async def read_menu_from_sms(
 
     if NumMedia > 0:
         media_url = MediaUrl0
-        print(media_url)
+        # print(media_url)
         img_data = requests.get(media_url).content
 
         wine_details_list = handle_image(img_data)
