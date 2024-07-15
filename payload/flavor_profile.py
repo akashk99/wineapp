@@ -8,7 +8,7 @@ class Structure:
     fizziness: Optional[float]
     intensity: Optional[float]
     sweetness: Optional[float]
-    tannin: Optional[float]
+    tannin: Optional[float]=None
 
 @dataclass
 class FlavorProfile:
