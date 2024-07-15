@@ -93,7 +93,6 @@
                         <th>Menu Price</th>
                         <th>Flavor Profile</th>
                         <th>Top Flavors</th>
-                        <th>Alcohol Content</th>
                         <th>Menu Year</th>
                         <th>Online Price</th>
                         <th>Region</th>
@@ -104,7 +103,7 @@
                 </thead>
                 <tbody id="wineTableBody">
                     <tr id="spinnerRow">
-                        <td colspan="12" style="text-align: center;">
+                        <td colspan="11" style="text-align: center;">
                             <div id="spinner" class="spinner"></div>
                         </td>
                     </tr>
@@ -185,10 +184,6 @@
                 const topFlavorsCell = document.createElement('td');
                 topFlavorsCell.textContent = wine.flavor_profile && wine.flavor_profile.top_flavors ? wine.flavor_profile.top_flavors.join(', ') : 'N/A';
                 row.appendChild(topFlavorsCell);
-
-                const alcoholContentCell = document.createElement('td');
-                alcoholContentCell.textContent = wine.alcohol_content || 'N/A';
-                row.appendChild(alcoholContentCell);
 
                 const menuYearCell = document.createElement('td');
                 menuYearCell.textContent = wine.menu_year || 'N/A';
