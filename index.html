@@ -120,12 +120,16 @@
             formData.append('file', fileInput.files[0]);
 
             const spinner = document.getElementById('spinner');
-            const tableBody = document.getElementById('wineTableBody');
             const spinnerRow = document.getElementById('spinnerRow');
+            const tableBody = document.getElementById('wineTableBody');
 
             // Clear existing table data except for the spinner row
-            tableBody.innerHTML = '';
-            tableBody.appendChild(spinnerRow);
+            const rows = Array.from(tableBody.rows);
+            rows.forEach(row => {
+                if (row !== spinnerRow) {
+                    row.remove();
+                }
+            });
 
             spinner.style.display = 'block';  // Show spinner
 
@@ -152,7 +156,6 @@
 
         function displayTable(data) {
             const tableBody = document.getElementById('wineTableBody');
-            tableBody.innerHTML = ''; // Clear existing table data
 
             data.forEach(wine => {
                 const row = document.createElement('tr');
