@@ -3,11 +3,20 @@ from io import BytesIO
 import requests
 from fastapi import FastAPI, UploadFile, File, Form
 from PIL import Image
+from fastapi.middleware.cors import CORSMiddleware
 
 from routine.menu_image_processor import WineMenuImageProcessor
 from routine.wine_detail_fetcher import WineDetailFetcher
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 
 def handle_image(file_contents):
