@@ -68,7 +68,6 @@ class VivinoClient():
     def get_wholesale_price(self, vintage_id):
         response = self.session.get(f"{self.base_url}/checkout_prices?vintage_id={vintage_id}&language=en")
         if response.status_code != 200:
-            print(response.text)
             return None
 
         response = response.json()

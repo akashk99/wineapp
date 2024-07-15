@@ -44,7 +44,6 @@ async def read_menu(file: UploadFile = File(...)):
         contents = await file.read()
 
         wine_details_list = handle_image(contents)
-        print(wine_details_list)
 
         return wine_details_list
 
