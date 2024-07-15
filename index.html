@@ -94,7 +94,7 @@
                 </thead>
                 <tbody id="wineTableBody">
                     <tr id="spinnerRow">
-                        <td colspan="10" style="text-align: center;">
+                        <td colspan="11" style="text-align: center;">
                             <div id="spinner" class="spinner"></div>
                         </td>
                     </tr>
@@ -157,11 +157,11 @@
                 row.appendChild(nameCell);
 
                 const typeCell = document.createElement('td');
-                typeCell.textContent = wine.wine_type;
+                typeCell.textContent = wine.wine_type || 'N/A';
                 row.appendChild(typeCell);
 
                 const menuPriceCell = document.createElement('td');
-                menuPriceCell.textContent = wine.menu_price;
+                menuPriceCell.textContent = wine.menu_price || 'N/A';
                 row.appendChild(menuPriceCell);
 
                 const flavorProfileCell = document.createElement('td');
