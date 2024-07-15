@@ -60,6 +60,15 @@
                 font-size: 14px;
             }
         }
+        .green-background {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+        .yellow-background {
+            background-color: rgba(255, 255, 0, 0.1);
+        }
+        .red-background {
+            background-color: rgba(255, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -83,6 +92,7 @@
                         <th>Wine Type</th>
                         <th>Menu Price</th>
                         <th>Flavor Profile</th>
+                        <th>Top Flavors</th>
                         <th>Alcohol Content</th>
                         <th>Menu Year</th>
                         <th>Online Price</th>
@@ -94,7 +104,7 @@
                 </thead>
                 <tbody id="wineTableBody">
                     <tr id="spinnerRow">
-                        <td colspan="11" style="text-align: center;">
+                        <td colspan="12" style="text-align: center;">
                             <div id="spinner" class="spinner"></div>
                         </td>
                     </tr>
@@ -166,11 +176,15 @@
 
                 const flavorProfileCell = document.createElement('td');
                 if (wine.flavor_profile && wine.flavor_profile.structure) {
-                    flavorProfileCell.textContent = `Acidity: ${wine.flavor_profile.structure.acidity}, Intensity: ${wine.flavor_profile.structure.intensity}, Sweetness: ${wine.flavor_profile.structure.sweetness}, Top Flavors: ${wine.flavor_profile.top_flavors ? wine.flavor_profile.top_flavors.join(', ') : 'N/A'}`;
+                    flavorProfileCell.textContent = `Acidity: ${wine.flavor_profile.structure.acidity}, Intensity: ${wine.flavor_profile.structure.intensity}, Sweetness: ${wine.flavor_profile.structure.sweetness}`;
                 } else {
                     flavorProfileCell.textContent = 'N/A';
                 }
                 row.appendChild(flavorProfileCell);
+
+                const topFlavorsCell = document.createElement('td');
+                topFlavorsCell.textContent = wine.flavor_profile && wine.flavor_profile.top_flavors ? wine.flavor_profile.top_flavors.join(', ') : 'N/A';
+                row.appendChild(topFlavorsCell);
 
                 const alcoholContentCell = document.createElement('td');
                 alcoholContentCell.textContent = wine.alcohol_content || 'N/A';
@@ -199,6 +213,17 @@
                 const inputWineCell = document.createElement('td');
                 inputWineCell.textContent = JSON.stringify(wine.input_wine) || 'N/A';
                 row.appendChild(inputWineCell);
+
+                // Add row background color based on rating
+                if (wine.rating) {
+                    if (wine.rating >= 4) {
+                        row.classList.add('green-background');
+                    } else if (wine.rating >= 3) {
+                        row.classList.add('yellow-background');
+                    } else {
+                        row.classList.add('red-background');
+                    }
+                }
 
                 tableBody.appendChild(row);
             });
