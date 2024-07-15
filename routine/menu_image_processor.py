@@ -23,22 +23,21 @@ class WineMenuImageProcessor:
         return self.__process_raw_wine_list(text)
 
     def __preprocess_image(self):
+        # Convert the image to grayscale
         self.image = self.image.convert('L')
-        threshold = 128
-        self.image = self.image.point(lambda p: p > threshold and 255)
 
-        # Resize the image to enhance OCR accuracy
+        # Resize the image to enhance OCR accuracy (avoid excessive resizing)
         width, height = self.image.size
-        self.image = self.image.resize((width * 2, height * 2))
+        self.image = self.image.resize((int(width * 1.5), int(height * 1.5)))
 
-        self.image = self.image.filter(ImageFilter.GaussianBlur(1))
-
-        # Enhance contrast
+        # Enhance contrast (moderate enhancement)
         enhancer = ImageEnhance.Contrast(self.image)
-        self.image = enhancer.enhance(2)
+        self.image = enhancer.enhance(1.5)
 
-        # Optionally apply other filters
+        # Optional: Apply a light sharpening filter
         self.image = self.image.filter(ImageFilter.SHARPEN)
+
+
 
     def __process_raw_wine_list(self, text):
         response = self.open_ai_client.chat.completions.create(

@@ -18,6 +18,7 @@ class WineDetailFetcher:
 
         return WineDetails(
             name=vivino_query_response.name,
+            input_wine=wine,
             menu_price=wine.price,
             flavor_profile=flavor_profile,
             online_price=wholesale_price,

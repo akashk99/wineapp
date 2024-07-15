@@ -35,7 +35,7 @@ def handle_image(file_contents):
         if wine_details:
             wine_details_list.append(wine_details)
 
-    wine_details_list.sort(key=lambda x: (x.rating, x.rating_count), reverse=True)
+    # wine_details_list.sort(key=lambda x: (x.rating, x.rating_count), reverse=True)
 
     return wine_details_list
 
