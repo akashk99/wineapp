@@ -17,8 +17,13 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .responsive-table {
+            width: 100%;
+            overflow-x: auto;
+        }
         table {
             width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
         th, td {
@@ -52,6 +57,7 @@
             }
             th, td {
                 padding: 5px;
+                font-size: 14px;
             }
         }
     </style>
@@ -69,28 +75,30 @@
                 </div>
             </div>
         </form>
-        <table class="u-full-width">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Menu Price</th>
-                    <th>Flavor Profile</th>
-                    <th>Alcohol Content</th>
-                    <th>Menu Year</th>
-                    <th>Online Price</th>
-                    <th>Region</th>
-                    <th>Rating</th>
-                    <th>Rating Count</th>
-                </tr>
-            </thead>
-            <tbody id="wineTableBody">
-                <tr id="spinnerRow">
-                    <td colspan="9" style="text-align: center;">
-                        <div id="spinner" class="spinner"></div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="responsive-table">
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Menu Price</th>
+                        <th>Flavor Profile</th>
+                        <th>Alcohol Content</th>
+                        <th>Menu Year</th>
+                        <th>Online Price</th>
+                        <th>Region</th>
+                        <th>Rating</th>
+                        <th>Rating Count</th>
+                    </tr>
+                </thead>
+                <tbody id="wineTableBody">
+                    <tr id="spinnerRow">
+                        <td colspan="9" style="text-align: center;">
+                            <div id="spinner" class="spinner"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
