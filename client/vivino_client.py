@@ -96,7 +96,14 @@ class VivinoClient():
 
         json_data = response.json()
 
-        structure_data = json_data["tastes"]["structure"]
+        tastes = json_data["tastes"]
+        if not tastes:
+            return None
+
+        structure_data = tastes["structure"]
+        if not structure_data:
+            return None
+
         structure = Structure(
             acidity=structure_data["acidity"],
             fizziness=structure_data["fizziness"],
