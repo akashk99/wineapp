@@ -88,11 +88,12 @@
                         <th>Region</th>
                         <th>Rating</th>
                         <th>Rating Count</th>
+                        <th>Input Wine</th>
                     </tr>
                 </thead>
                 <tbody id="wineTableBody">
                     <tr id="spinnerRow">
-                        <td colspan="9" style="text-align: center;">
+                        <td colspan="10" style="text-align: center;">
                             <div id="spinner" class="spinner"></div>
                         </td>
                     </tr>
@@ -109,7 +110,16 @@
             formData.append('file', fileInput.files[0]);
 
             const spinner = document.getElementById('spinner');
-            spinner.style.display = 'block';  // Show spinner
+            const spinnerRow = document.getElementById('spinnerRow');
+            const tableBody = document.getElementById('wineTableBody');
+
+            // Clear existing table data except for the spinner row
+            tableBody.innerHTML = '';
+            tableBody.appendChild(spinnerRow);
+
+            if (spinner) {
+                spinner.style.display = 'block';  // Show spinner
+            }
 
             try {
                 const response = await fetch('https://wineapi-b32ad6ec268a.herokuapp.com/menu', {
@@ -117,12 +127,20 @@
                     body: formData
                 });
 
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText);
+                }
+
                 const result = await response.json();
                 displayTable(result);
             } catch (error) {
+                alert('Error: ' + error.message);
                 console.error('Error:', error);
             } finally {
-                spinner.style.display = 'none';  // Hide spinner
+                if (spinner) {
+                    spinner.style.display = 'none';  // Hide spinner
+                }
             }
         });
 
@@ -168,6 +186,10 @@
                 const ratingCountCell = document.createElement('td');
                 ratingCountCell.textContent = wine.rating_count;
                 row.appendChild(ratingCountCell);
+
+                const inputWineCell = document.createElement('td');
+                inputWineCell.textContent = JSON.stringify(wine.input_wine);
+                row.appendChild(inputWineCell);
 
                 tableBody.appendChild(row);
             });

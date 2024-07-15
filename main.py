@@ -1,7 +1,7 @@
 from io import BytesIO
 
 import requests
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from pathlib import Path
 from fastapi.responses import HTMLResponse
 from PIL import Image
@@ -42,12 +42,14 @@ def handle_image(file_contents):
 
 @app.post("/menu")
 async def read_menu(file: UploadFile = File(...)):
-    if file.content_type.startswith('image'):
-        contents = await file.read()
+    try:
+        if file.content_type.startswith('image'):
+            contents = await file.read()
+            wine_details_list = handle_image(contents)
 
-        wine_details_list = handle_image(contents)
-
-        return wine_details_list
+            return wine_details_list
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=e)
 
     else:
         return {"error": "Uploaded file is not an image."}
