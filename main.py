@@ -49,7 +49,7 @@ async def read_menu(file: UploadFile = File(...)):
 
             return wine_details_list
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
 
     else:
         return {"error": "Uploaded file is not an image."}

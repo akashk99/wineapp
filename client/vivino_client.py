@@ -72,24 +72,23 @@ class VivinoClient():
 
         response = response.json()
 
+        if not response["prices"]:
+            return None
+
         if response["prices"]["availability"]:
             return response["prices"]["availability"]["median"]["amount"]
         else:
             return None
 
-    def get_wine_id(self, vintage_id):
+    def get_wine_by_vintage_id(self, vintage_id):
         response = self.session.get(f"{self.base_url}/vintages/{vintage_id}")
         if response.status_code != 200:
             return None
 
         response = response.json()
-        return response["vintage"]["wine"]["id"]
+        return response["vintage"]["wine"]
 
-    def get_flavor_profile(self, vintage_id):
-        wine_id = self.get_wine_id(vintage_id)
-        if not wine_id:
-            return None
-
+    def get_flavor_profile(self, wine_id):
         response = self.session.get(f"{self.base_url}/wines/{wine_id}/tastes")
         if response.status_code != 200:
             return None
@@ -101,16 +100,16 @@ class VivinoClient():
             return None
 
         structure_data = tastes["structure"]
-        if not structure_data:
-            return None
 
-        structure = Structure(
-            acidity=structure_data["acidity"],
-            fizziness=structure_data["fizziness"],
-            intensity=structure_data["intensity"],
-            sweetness=structure_data["sweetness"],
-            tannin=structure_data["tannin"],
-        )
+        structure = None
+        if structure_data:
+            structure = Structure(
+                acidity=structure_data["acidity"],
+                fizziness=structure_data["fizziness"],
+                intensity=structure_data["intensity"],
+                sweetness=structure_data["sweetness"],
+                tannin=structure_data["tannin"],
+            )
 
         top_flavors = []
         if json_data["tastes"]["flavor"]:

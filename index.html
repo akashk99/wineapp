@@ -64,7 +64,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Upload Image and Get Wine Details</h1>
+        <h1>Wine Menu Reader</h1>
         <form id="imageForm">
             <div class="row">
                 <div class="six columns">
@@ -80,6 +80,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Wine Type</th>
                         <th>Menu Price</th>
                         <th>Flavor Profile</th>
                         <th>Alcohol Content</th>
@@ -155,40 +156,48 @@
                 nameCell.textContent = wine.name;
                 row.appendChild(nameCell);
 
+                const typeCell = document.createElement('td');
+                typeCell.textContent = wine.wine_type;
+                row.appendChild(typeCell);
+
                 const menuPriceCell = document.createElement('td');
                 menuPriceCell.textContent = wine.menu_price;
                 row.appendChild(menuPriceCell);
 
                 const flavorProfileCell = document.createElement('td');
-                flavorProfileCell.textContent = `Acidity: ${wine.flavor_profile.structure.acidity}, Intensity: ${wine.flavor_profile.structure.intensity}, Sweetness: ${wine.flavor_profile.structure.sweetness}, Top Flavors: ${wine.flavor_profile.top_flavors ? wine.flavor_profile.top_flavors.join(', ') : 'N/A'}`;
+                if (wine.flavor_profile && wine.flavor_profile.structure) {
+                    flavorProfileCell.textContent = `Acidity: ${wine.flavor_profile.structure.acidity}, Intensity: ${wine.flavor_profile.structure.intensity}, Sweetness: ${wine.flavor_profile.structure.sweetness}, Top Flavors: ${wine.flavor_profile.top_flavors ? wine.flavor_profile.top_flavors.join(', ') : 'N/A'}`;
+                } else {
+                    flavorProfileCell.textContent = 'N/A';
+                }
                 row.appendChild(flavorProfileCell);
 
                 const alcoholContentCell = document.createElement('td');
-                alcoholContentCell.textContent = wine.alcohol_content;
+                alcoholContentCell.textContent = wine.alcohol_content || 'N/A';
                 row.appendChild(alcoholContentCell);
 
                 const menuYearCell = document.createElement('td');
-                menuYearCell.textContent = wine.menu_year;
+                menuYearCell.textContent = wine.menu_year || 'N/A';
                 row.appendChild(menuYearCell);
 
                 const onlinePriceCell = document.createElement('td');
-                onlinePriceCell.textContent = wine.online_price;
+                onlinePriceCell.textContent = wine.online_price || 'N/A';
                 row.appendChild(onlinePriceCell);
 
                 const regionCell = document.createElement('td');
-                regionCell.textContent = wine.region;
+                regionCell.textContent = wine.region || 'N/A';
                 row.appendChild(regionCell);
 
                 const ratingCell = document.createElement('td');
-                ratingCell.textContent = wine.rating;
+                ratingCell.textContent = wine.rating || 'N/A';
                 row.appendChild(ratingCell);
 
                 const ratingCountCell = document.createElement('td');
-                ratingCountCell.textContent = wine.rating_count;
+                ratingCountCell.textContent = wine.rating_count || 'N/A';
                 row.appendChild(ratingCountCell);
 
                 const inputWineCell = document.createElement('td');
-                inputWineCell.textContent = JSON.stringify(wine.input_wine);
+                inputWineCell.textContent = JSON.stringify(wine.input_wine) || 'N/A';
                 row.appendChild(inputWineCell);
 
                 tableBody.appendChild(row);

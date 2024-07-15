@@ -10,6 +10,7 @@ class WineDetails:
     name: str
     input_wine: WineMenuItem
     menu_price: Optional[int] = None
+    wine_type: Optional[str] = None
     flavor_profile: Optional[FlavorProfile] = None
     alcohol_content: Optional[float] = None
     menu_year: Optional[int] = None
